@@ -48,8 +48,8 @@ def find_motifs(in_file, motif_len, repetition, out_file):
 			if motif not in motif_dict:
 				motif_dict[motif] = 0
 			motif_dict[motif] += 1
-		motif_dict = {k: v for k, v in motif_dict.iteritems() if v >= repetition}	
-		sorted_list = sorted(motif_dict.iteritems(), key = operator.itemgetter(1), reverse = True)
+		motif_dict = {k: v for k, v in motif_dict.items() if v >= repetition}	
+		sorted_list = sorted(motif_dict.items(), key = operator.itemgetter(1), reverse = True)
 	print('>>>detected motifs')
 	print(sorted_list)
 	with open(out_file, 'w') as out_file_2:
@@ -88,7 +88,7 @@ def hist_report(in_file, motif_len):
 #variables
 motif_len = 5
 repetition = 4
-write_to_log = 'no' #if yes, it prints the output in log.txt instead printing on screen
+write_to_log = 'yes' #if yes, it prints the output in log.txt instead printing on screen
  
 #files
 in_file = 'sequence_file.txt'

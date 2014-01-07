@@ -1,3 +1,21 @@
+#############################***********alec's Motif Finder***********############################
+#                                                                                                #
+# The aim of this software is to provide a full featured 'motif finder' focused on the analysis  #
+# of typical APTAMER selection results. Aptamers are short sequence of nucleotides or aminoacids #
+# (DNA, RNA, peptides, circular peptides and small proteins). In molecular biology, there are    #
+# two main methods to select aptamers: SELEX and Phage Display. Both methods rely on the         #
+# analysis of sequences to discriminate specifically enriched aptamers from background noise.    #
+# The input of this software is then a list of short sequences of DNA, RNA or peptides.          #
+# The lenght of such sequences is tipically in a range of 5 and 50 units. The sequences are      #
+# composed exclusively by strings of alphabet characters.                                        #
+#                                                                                                #
+##################################################################################################
+
+
+
+
+
+
 
 def merge_sequences(in_file, out_file):
 	'''(input file name, output file name) -> dict of {'id':'sequence'}, ['merged_sequences'], output_file
@@ -31,8 +49,33 @@ def merge_sequences(in_file, out_file):
 		print('>>>merged sequence' + '\n' + merged_sequences)
 #****************END*OF*FUNCTION****************
 	
- 
+
 def find_motifs(in_file, motif_len, repetition, out_file):
+	'''(input file name, int, int, outpu file name ) -> dict of motif:repetition, sorted list of list of str:int 
+	Generate motif of lenght -motif_lenght- out of a sequence,
+	then check whether the motif are repepted -repetition- times into the sequence.
+	Return a ordered list containing motif as key
+	and the times it was found to be repeted into the sequence as value.
+	'''
+	import operator
+	with open(in_file, 'r',) as in_file:
+		s = in_file.readline()
+		motif_dict = {}
+		for i in range(len(s)-motif_len):
+			motif = s[i:i+motif_len]
+			if motif not in motif_dict:
+				motif_dict[motif] = 0
+			motif_dict[motif] += 1
+		motif_dict = {k: v for k, v in motif_dict.iteritems() if v >= repetition}	
+		sorted_list = sorted(motif_dict.iteritems(), key = operator.itemgetter(1), reverse = True)
+	print('>>>detected motifs')
+	print(sorted_list)
+	with open(out_file, 'w') as out_file_2:
+			out_file_2.write(str(sorted_list))
+#****************END*OF*FUNCTION****************
+
+
+def find_motifs_3(in_file, motif_len, repetition, out_file): # Python 3 version
 	'''(input file name, int, int, outpu file name ) -> dict of motif:repetition, sorted list of list of str:int 
 	Generate motif of lenght -motif_lenght- out of a sequence,
 	then check whether the motif are repepted -repetition- times into the sequence.
@@ -55,8 +98,8 @@ def find_motifs(in_file, motif_len, repetition, out_file):
 	with open(out_file, 'w') as out_file_2:
 			out_file_2.write(str(sorted_list))
 #****************END*OF*FUNCTION****************
- 
- 
+
+
 def hist_report(in_file, motif_len):
 	'''(input file name, int)-> str
 	Take a file with 'merged_sequences' as input and makes a histogram-like report of the most repeated motifs.
@@ -82,29 +125,29 @@ def hist_report(in_file, motif_len):
 				print(motif + ' :' + '*'*int(repeated))
 				top_10 += 1
 #****************END*OF*FUNCTION****************	
- 
- 
+
+
 #######alecMotifFinderTEST#######
 #variables
 motif_len = 5
 repetition = 4
-write_to_log = 'yes' #if yes, it prints the output in log.txt instead printing on screen
- 
+write_to_log = 'no' #if yes, it prints the output in log.txt instead printing on screen
+
 #files
 in_file = 'sequence_file.txt'
 out_file_1 = 'out_file_1.txt'
 out_file_2 = 'out_file_2.txt'
- 
+
 #gui
 separation_line ='\n#######################################\n'
 app_title = '***********Alec Motif Finder***********'
 version = 'alpha - December 2013'
 credits = 'by alec_djinn@yahoo.com'
- 
+
 #imports
 import sys
 import time
- 
+
 #log part 1
 if write_to_log == 'yes':
 	old_stdout = sys.stdout
@@ -123,13 +166,23 @@ print ('\n' + 'date : ' + time.strftime("%d/%m/%Y") + '   time : ' + time.strfti
 print(separation_line)
 merge_sequences(in_file, out_file_1)
 print(separation_line)
-find_motifs(out_file_1, motif_len, repetition, out_file_2)
+version_check = int((sys.version)[0]) # check Python version
+if version_check == 2:
+	# execute code for Python 2
+	print('Detected Python 2')
+	find_motifs(out_file_1, motif_len, repetition, out_file_2)
+elif version_check == 3:
+	#execute code for Python 3
+	print('Detected Python 3')
+	find_motifs_3(out_file_1, motif_len, repetition, out_file_2)
+else:
+	sys.exit('Python version error, please execute this orogram using Python version 2.7.x or newer')
 print(separation_line)
 hist_report(in_file, motif_len)
 print(separation_line)
 print('execution time')
 print(str(time.time() - start_time) + ' seconds\n')
- 
+
 #log part 2
 if write_to_log == 'yes':
 	sys.stdout = old_stdout #log END
@@ -137,6 +190,9 @@ if write_to_log == 'yes':
 	sys.exit('program ran succesfully and its output has been written in log.txt')
 else:
 	pass 
- 
+
 #exit
 sys.exit('program ran succesfully')
+
+
+

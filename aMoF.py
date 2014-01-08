@@ -1,198 +1,133 @@
-#############################***********alec's Motif Finder***********############################
-#                                                                                                #
-# The aim of this software is to provide a full featured 'motif finder' focused on the analysis  #
-# of typical APTAMER selection results. Aptamers are short sequence of nucleotides or aminoacids #
-# (DNA, RNA, peptides, circular peptides and small proteins). In molecular biology, there are    #
-# two main methods to select aptamers: SELEX and Phage Display. Both methods rely on the         #
-# analysis of sequences to discriminate specifically enriched aptamers from background noise.    #
-# The input of this software is then a list of short sequences of DNA, RNA or peptides.          #
-# The lenght of such sequences is tipically in a range of 5 and 50 units. The sequences are      #
-# composed exclusively by strings of alphabet characters.                                        #
-#                                                                                                #
-##################################################################################################
+def check_python():
+	'''(none) -> str
+	It checks Python version (only the major int) and prints what has been found. 
+	'''
+	version_check = int((sys.version)[0]) # checks Python version
+	if version_check == 2:
+		# executes code for Python 2
+		print('Detected Python 2')
+	elif version_check == 3:
+		# executes code for Python 2
+		print('Detected Python 3')
+	else:
+		sys.exit('Python version error!!\nThis program is compatible not compatible with your Python version.\nPlease install Python 2.7.x or Python 3.x')		
+#****************END*OF*FUNCTION****************
 
 
-
-
-
-
-
-def merge_sequences(in_file, out_file):
-	'''(input file name, output file name) -> dict of {'id':'sequence'}, ['merged_sequences'], output_file
-	Read a fasta format and store its data in a dictionary with >name as key and sequence as value.
-	Merge all the sequence lines of input_file into merged_sequences. 
-	Write 'merged-sequences' into a file.
-	Precondition: the file must be in fasta format.
+def format_sequences(infile):
+	'''(input file name) -> str
+	Reads a file containing a list of sequences preceded by a unique sequence id.
+	Removes all unneeded blank lines and checks whether the id is unique.
+	Prints the list of sequences found in the file.
+	Precondition: each sequence in the file is above its id. 
 	'''
 	sequence_dict = {}
-	merged_sequences = ''
-	print('>>>sequence list from ' + in_file + '\n')
-	with open(in_file, 'r') as in_file:
-		line = in_file.readline()
+	print('>>>sequences found in file ' + infile + '\n')
+	with open(infile, 'r') as infile:
+		line = infile.readline()
 		while line != '':
-			if line != '\n':
-				id = line[0:].strip()
-				line = in_file.readline()
+			if line != '\n': # skips initial blank lines
+				id = line[0:].strip().lower()
+				line = infile.readline()
+				while line == '\n': # skips blank lines between id and sequence
+					line = infile.readline()
 				sequence = line[0:].strip().upper()
 				print(id + '\n' + sequence + '\n')
-				merged_sequences = merged_sequences + sequence
-				line = in_file.readline()
-				if id not in sequence_dict:
+				line = infile.readline()
+				if id not in sequence_dict: # checks if the id are unique
 					sequence_dict[id] = sequence
 				else:
 					sys.exit(str('File format error: ' + id + ' is not an unique sequence id.' + '\nPlease check the sequence file and try again.'))
 			else:
-				line = in_file.readline()
-		print(separation_line)
-		with open(out_file, 'w') as out_file:
-			out_file.write(merged_sequences)
-		print('>>>merged sequence' + '\n' + merged_sequences)
-#****************END*OF*FUNCTION****************
-	
-
-def find_motifs(in_file, motif_len, repetition, out_file):
-	'''(input file name, int, int, outpu file name ) -> dict of motif:repetition, sorted list of list of str:int 
-	Generate motif of lenght -motif_lenght- out of a sequence,
-	then check whether the motif are repepted -repetition- times into the sequence.
-	Return a ordered list containing motif as key
-	and the times it was found to be repeted into the sequence as value.
-	'''
-	import operator
-	with open(in_file, 'r',) as in_file:
-		s = in_file.readline()
-		motif_dict = {}
-		for i in range(len(s)-motif_len):
-			motif = s[i:i+motif_len]
-			if motif not in motif_dict:
-				motif_dict[motif] = 0
-			motif_dict[motif] += 1
-		motif_dict = {k: v for k, v in motif_dict.iteritems() if v >= repetition}	
-		sorted_list = sorted(motif_dict.iteritems(), key = operator.itemgetter(1), reverse = True)
-	print('>>>detected motifs')
-	print(sorted_list)
-	with open(out_file, 'w') as out_file_2:
-			out_file_2.write(str(sorted_list))
+				line = infile.readline()			
 #****************END*OF*FUNCTION****************
 
 
-def find_motifs_3(in_file, motif_len, repetition, out_file): # Python 3 version
-	'''(input file name, int, int, outpu file name ) -> dict of motif:repetition, sorted list of list of str:int 
-	Generate motif of lenght -motif_lenght- out of a sequence,
-	then check whether the motif are repepted -repetition- times into the sequence.
-	Return a ordered list containing motif as key
-	and the times it was found to be repeted into the sequence as value.
+def find_motifs(infile, motif_len, repetition):
+	'''(input file name, int, int) -> sorted dictionary
+	Reads a file containing a list of sequences preceded by a unique sequence id.
+	Removes all unneeded blank lines and checks whether the id is unique.
+	Generates a dictionary of id, motifs.
+	Evaluates whether a motif is repeated at least 'repetition' times -> if not, deletes it from the dictionary.
+	Sorts the dictionary and prints a report.
+	Precondition: each sequence in the file is above its id. 
 	'''
-	import operator
-	with open(in_file, 'r',) as in_file:
-		s = in_file.readline()
-		motif_dict = {}
-		for i in range(len(s)-motif_len):
-			motif = s[i:i+motif_len]
-			if motif not in motif_dict:
-				motif_dict[motif] = 0
-			motif_dict[motif] += 1
-		motif_dict = {k: v for k, v in motif_dict.items() if v >= repetition}	
-		sorted_list = sorted(motif_dict.items(), key = operator.itemgetter(1), reverse = True)
-	print('>>>detected motifs')
-	print(sorted_list)
-	with open(out_file, 'w') as out_file_2:
-			out_file_2.write(str(sorted_list))
-#****************END*OF*FUNCTION****************
-
-
-def hist_report(in_file, motif_len):
-	'''(input file name, int)-> str
-	Take a file with 'merged_sequences' as input and makes a histogram-like report of the most repeated motifs.
-	'''
-	letters = 'QWERTYUIOPASDFGHJKLZXCVBNM'
-	num = '0123456789'
-	with open(out_file_2, 'r') as in_file:
-		line = in_file.readline()
-		n = 0
-		top_10 = 0
-		print('>>>top_10')
-		while n < len(line) and top_10 < 10:
-			if line[n] not in letters and line[n] not in num:
-				n += 1
-			elif line[n] in letters:
-				motif = line[n:n+motif_len]
-				n += motif_len
+	#sequence_dict = {}
+	motif_dict = {}
+	with open(infile, 'r') as infile:
+		line = infile.readline()
+		while line != '':
+			if line != '\n':
+				id = line[0:].strip().lower() # set id in lowercase
+				line = infile.readline()
+				while line == '\n':
+					line = infile.readline()	
+				sequence = line[0:].strip().upper()	# set sequence in uppercase
+				#print(id + '\n' + sequence + '\n')
+				for i in range(len(sequence) - motif_len +1): # generates a dictionary of motifs (motif_dict)
+					motif = sequence[i:i+motif_len]
+					if motif not in motif_dict:
+						motif_dict[motif] = 1
+					else:
+						motif_dict[motif] += 1
+				line = infile.readline()
+				#if id not in sequence_dict:
+					#sequence_dict[id] = sequence
+				#else:
+					#sys.exit(str('File format error: ' + id + ' is not an unique sequence id.' + '\nPlease check the sequence file and try again.'))
 			else:
-				repeated = ''
-				while line[n] in num:
-					repeated += line[n]
-					n += 1
-				print(motif + ' :' + '*'*int(repeated))
-				top_10 += 1
-#****************END*OF*FUNCTION****************	
+				line = infile.readline()
+	# removes from motif_dict all the motif repeated less than 'repetition' times
+	keys_to_remove = [key for key, value in motif_dict.items() if value < repetition]
+	for key in keys_to_remove:
+		del motif_dict[key]
+	# sorts the dictionary
+	global sorted_list # sets sorted_list as global variable
+	sorted_list = sorted(motif_dict.items(), key = operator.itemgetter(1), reverse = True)
+	print('>>>detected motifs with lenght = ' + str(motif_len) + ' and repeated at least ' + str(repetition) + ' times')
+	print(sorted_list)
+	print('\n')			
+#****************END*OF*FUNCTION****************
 
 
-#######alecMotifFinderTEST#######
-#variables
-motif_len = 5
-repetition = 4
-write_to_log = 'no' #if yes, it prints the output in log.txt instead printing on screen
-
-#files
-in_file = 'sequence_file.txt'
-out_file_1 = 'out_file_1.txt'
-out_file_2 = 'out_file_2.txt'
-
-#gui
-separation_line ='\n#######################################\n'
-app_title = '***********Alec Motif Finder***********'
-version = 'alpha - December 2013'
-credits = 'by alec_djinn@yahoo.com'
-
-#imports
+# import	
+import operator
 import sys
 import time
+
+# variables
+start_time = time.time()
+infile = 'sequence_file.txt'
+motif_len = 5
+repetition = 4
+sorted_list = [1]
+write_to_log = 'yes' #if yes, it prints the output in log.txt instead printing on screen
+logfile = 'log.txt'
 
 #log part 1
 if write_to_log == 'yes':
 	old_stdout = sys.stdout
-	log_file = open('log.txt','w') # change to open('log.txt','a') to append consecutive run on log.txt
-	sys.stdout = log_file
+	logfile = open(logfile,'w')
+	sys.stdout = logfile
 else:
 	pass
-	
-#body
-start_time = time.time()
-print('\n')
-print(app_title)
-print('\n' + 'version :' + version)
-print(credits)
-print ('\n' + 'date : ' + time.strftime("%d/%m/%Y") + '   time : ' + time.strftime("%H:%M:%S"))
-print(separation_line)
-merge_sequences(in_file, out_file_1)
-print(separation_line)
-version_check = int((sys.version)[0]) # check Python version
-if version_check == 2:
-	# execute code for Python 2
-	print('Detected Python 2')
-	find_motifs(out_file_1, motif_len, repetition, out_file_2)
-elif version_check == 3:
-	#execute code for Python 3
-	print('Detected Python 3')
-	find_motifs_3(out_file_1, motif_len, repetition, out_file_2)
-else:
-	sys.exit('Python version error, please execute this orogram using Python version 2.7.x or newer')
-print(separation_line)
-hist_report(in_file, motif_len)
-print(separation_line)
-print('execution time')
-print(str(time.time() - start_time) + ' seconds\n')
+
+# body
+check_python()
+format_sequences(infile)
+while sorted_list != []:
+	find_motifs(infile, motif_len, repetition)
+	motif_len += 1
+
+print('execution time :' + str(time.time() - start_time) + ' seconds\n')
 
 #log part 2
 if write_to_log == 'yes':
 	sys.stdout = old_stdout #log END
-	log_file.close() #close log_file
+	logfile.close() #close log_file
 	sys.exit('program ran succesfully and its output has been written in log.txt')
 else:
-	pass 
-
+	pass
+	
 #exit
 sys.exit('program ran succesfully')
-
-
-

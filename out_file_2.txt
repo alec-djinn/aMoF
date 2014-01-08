@@ -1,1 +1,0 @@
-[('AAGAT', 5), ('GCAAG', 5), ('CAAGA', 5), ('AGGGT', 4), ('GGGTA', 4), ('AGATC', 4), ('AGATA', 4)]

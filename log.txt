@@ -100,5 +100,5 @@ CGGGGAGCAAACCCGGCAACAGATG
 []
 
 
-execution time :0.00991606712341 seconds
+execution time :0.012720823288 seconds
 

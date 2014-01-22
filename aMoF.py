@@ -1,4 +1,4 @@
-def check_python():
+def checkPython():
 	'''(none) -> str
 	It checks Python version (only the major int) and prints what has been found. 
 	'''
@@ -14,7 +14,7 @@ def check_python():
 #****************END*OF*FUNCTION****************
 
 
-def format_sequences(infile):
+def formatSequences(infile):
 	'''(input file name) -> str
 	Reads a file containing a list of sequences preceded by a unique sequence id.
 	Removes all unneeded blank lines and checks whether the id is unique.
@@ -22,28 +22,33 @@ def format_sequences(infile):
 	Precondition: each sequence in the file is above its id. 
 	'''
 	sequence_dict = {}
+	count = 0
 	print('>>>sequences found in file ' + infile + '\n')
 	with open(infile, 'r') as infile:
 		line = infile.readline()
 		while line != '':
-			if line != '\n': # skips initial blank lines
-				id = line[0:].strip().lower()
+			if line != '\n' and '>>>' not in line: # skips initial blank lines and '>>>' tagged lines
+				id = line[0:].strip().upper()
+				#count += 1
 				line = infile.readline()
-				while line == '\n': # skips blank lines between id and sequence
+				while line == '\n' or '>>>' in line: # skips blank and '>>>' tagged lines between id and sequence
 					line = infile.readline()
 				sequence = line[0:].strip().upper()
-				print(id + '\n' + sequence + '\n')
+				if sequence != 'WILD TYPE' and sequence != 'CORRUPTED':
+					print(id + '\n' + sequence + '\n')
+					count += 1
 				line = infile.readline()
 				if id not in sequence_dict: # checks if the id are unique
 					sequence_dict[id] = sequence
 				else:
 					sys.exit(str('File format error: ' + id + ' is not an unique sequence id.' + '\nPlease check the sequence file and try again.'))
 			else:
-				line = infile.readline()			
+				line = infile.readline()
+	print('>>>total sequences found ' + str(count) + '\n')			
 #****************END*OF*FUNCTION****************
 
 
-def find_motifs(infile, motif_len, repetition):
+def findMotifs(infile, motif_len, repetition):
 	'''(input file name, int, int) -> sorted dictionary
 	Reads a file containing a list of sequences preceded by a unique sequence id.
 	Removes all unneeded blank lines and checks whether the id is unique.
@@ -57,10 +62,10 @@ def find_motifs(infile, motif_len, repetition):
 	with open(infile, 'r') as infile:
 		line = infile.readline()
 		while line != '':
-			if line != '\n':
+			if line != '\n' and '>>>' not in line: # skips initial blank lines and '>>>' tagged lines
 				id = line[0:].strip().lower() # set id in lowercase
 				line = infile.readline()
-				while line == '\n':
+				while line == '\n' or '>>>' in line: # skips blank and '>>>' tagged lines between id and sequence
 					line = infile.readline()	
 				sequence = line[0:].strip().upper()	# set sequence in uppercase
 				#print(id + '\n' + sequence + '\n')
@@ -113,10 +118,10 @@ else:
 	pass
 
 # body
-check_python()
-format_sequences(infile)
+checkPython()
+formatSequences(infile)
 while sorted_list != []:
-	find_motifs(infile, motif_len, repetition)
+	findMotifs(infile, motif_len, repetition)
 	motif_len += 1
 
 print('execution time :' + str(time.time() - start_time) + ' seconds\n')

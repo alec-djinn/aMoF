@@ -45,14 +45,13 @@ This program allow the user to better define from which kind of selection experi
 With this information program will automatically slice out the sequence of interest from the whole sequencing result and it translate it if needed.
 For example, in case of M13 Phage Display usinf PhD-C7C, a classic sequencing output, using company provided sequencing primers, looks like this:
 
-| sequencing output
 | ------------------------------------------------------------
 | >12826357.seq - ID: CB8 - Phage Display - PhDC7C - Acid Elution 3 - Plate 2_A01-Amply M13 pIII CS - R on 2014/1/16-0:53:50 automatically edited with PhredPhrap, start with base no.: 41  Internal Params: Windowsize: 20, Goodqual: 19, Badqual: 10, Minseqlength: 50, nbadelimit: 1     
 | agTTTTgTCGTCTTTcCagACGTTAGTAAATGAATTTTCtGtAtGGgattTTGCTAAACAACTTTCAACAGTTTCGGCCGAACCTCCACCGCACTCATAAGGCGAACCAGTATTACAAGCAGAGTGAGAATAGAAAGGTACCACTAAAGGAATTGCGAATAATAATTTTTTCACGTTGAAAATCTCCAAAAAAAAGGCTCCAAAAGGAGCCTTTAATTGTATCGGTTTATCAGCTTGCTTTCGAGGTGAATTTCTTAAACAGCTTGATACCGATAGTTGCGCCgACnATGACAACAACCATCGCCCACGCATAACCGATATATTCGGTCGCTGAGGCTTGCAGGGAGTTAAAGGCCGCTTTTGCGGGATCGTCACCCTCAGCAGCGAaagAcAGCATCGGAACGAGGGTAGCAACGGCTACAGAGGCTTTGAGGACTAAAGACTTTTTCATGAGGAAGTTTCCATTAAACGGGTAAAATACgTAATGCCACTACGAAGGCACCaaCCTAAAACgAaagAGGCAaaanAATACactAaaACACTCATCTTTGACCCCCAgcGATTATACCAAGCGCGAAACAAAGtACAACGGAGATTTGTATCATCGCCTGATAAATTGTGTCgAAnTCCGCGAcCTGCTCCATGTTACTTAgCCGGAACGAGGCGCAGACGGnCAATcannnnGGAaCCGAaCTGACCaACtTTGAAAgAggacnnAngAaCGGTGTACAGACCAGGCGCATAGGCTGGCTGAnCtTtCaTcaAnAgtAnnctTGAcAAGAACCGGATATTCATTAcCCnAAnTCaacGtACnaAGCTnGCtCaTTccannGAAnnAAGGctTGcCCTGAcgAgAAACacCananngAgtAGTAAATTGGgcTTtGAgATGgnnttattTCaaCTTTaatCaTTGTGAATTACcttntGCgAtTTnanAAcTGGCTcatta
 
 
 
-| and after using seqPrep.py it looks like this:
+and after using seqPrep.py it looks like this:
 | ------------------------------------------------------------
 | >12826357-A01
 | NTGSPYE

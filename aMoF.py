@@ -107,7 +107,7 @@ motif_len = 5
 repetition = 4
 sorted_list = [1]
 write_to_log = 'yes' #if yes, it prints the output in log.txt instead printing on screen
-logfile = 'log.txt'
+logfile = 'results.txt'
 
 #log part 1
 if write_to_log == 'yes':

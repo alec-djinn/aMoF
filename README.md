@@ -1,3 +1,23 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 aMoF - aptamers Motif Finder -also known as- alec's Motif Finder
 ====
 aMoF is a collection of Python scripts developed to to provide a full featured 'motif finder' tools focused on the analysis of APTAMERS selection results.

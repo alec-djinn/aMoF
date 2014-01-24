@@ -42,7 +42,7 @@ You can chose among this type of experiments
 * RNA SELEX
 
 With this information program will automatically slice out the sequence of interest from the whole sequencing result and it translate it if needed.
-For example, in case of M13 Phage Display usinf PhD-C7C, a classic sequencing output, using company provided sequencing primers, looks like this:
+For example, in case of __M13 Phage Display PhD-C7C__, a classic sequencing output, using company provided sequencing primers, looks like this:
 
 | original sequencing output|
 | :------------------------------------------------------------

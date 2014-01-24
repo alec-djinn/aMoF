@@ -95,8 +95,6 @@ def concatenateFAS(folder, outfilename):
 	Combine the content of all files .fas founded in a specific folder into a file.
 	Precondition: the folder must be in the same main-folder of the script. 
 	'''
-	import shutil
-	import glob
 	with open(outfilename, 'wb') as outfile:
 		for filename in glob.glob(folder + '*.fas'):
 			with open(filename) as readfile:
@@ -120,11 +118,11 @@ def formatSequences(infile, experiment_type):
 	with open(infile, 'r') as infile:
 		line = infile.readline()
 		while line != '':
-			if line != '\n' and line[0:2] != '>>>': # skips initial blank lines and '>>>' tagged lines
-				id = line[0:9] + '-' + line[76:79].upper() # keeps only the seq ID values
+			if line != '\n' and line[0:2] != '>>>': #skip initial blank lines and '>>>' tagged lines
+				id = line[0:9] + '-' + line[76:79].upper() #keep only the seq ID values
 				count += 1
 				line = infile.readline()
-				while line == '\n' or line[0:2] == '>>>' : # skips blank and '>>>' tagged lines between id and sequence
+				while line == '\n' or line[0:2] == '>>>' : #skip blank and '>>>' tagged lines between id and sequence
 					line = infile.readline()
 				sequence = line[0:].strip().upper()
 				# if PhD-C7C
@@ -148,7 +146,7 @@ def formatSequences(infile, experiment_type):
 						unreadable += 1						
 				#print(id + '\n' + sequence + '\n')
 				line = infile.readline()
-				if id not in sequence_dict: # checks if the id are unique
+				if id not in sequence_dict: #check if the id are unique
 					sequence_dict[id] = sequence
 				else:
 					sys.exit(str('File format error: ' + id + ' is not an unique sequence id.' + '\nPlease check the sequence file and try again.'))
@@ -166,19 +164,21 @@ def formatSequences(infile, experiment_type):
 #imports
 import sys
 import time
+import shutil
+import glob
 
 #variables
 folder = 'FASfiles/'            	
 outfilename = 'all_sequences.txt'
 infile = outfilename
 
-#USER INPUTS
+#check user input
 chooseExperiment()
 while experiment_type not in exp_list:
 	print('\n\n****   ERROR! ' + str(experiment_type) + ' is not a valid choice. Please try again...   ****\n\n')
 	chooseExperiment()
 		
-#log part 1
+#write output - part 1
 write_to_log = 'yes' #if yes, it prints the output in FAS_log.txt instead printing on screen
 logfile = 'FAS_log.txt'
 logfilename = logfile
@@ -189,18 +189,17 @@ if write_to_log == 'yes':
 else:
 	pass
 	
-#BODY
+#body
 start_time = time.time()
 concatenateFAS(folder, outfilename)
 formatSequences(infile, experiment_type)
-
-#END
 print('>>>execution time :' + str(time.time() - start_time) + ' seconds\n')
 
-#log part 2
+#write output - part 2
 if write_to_log == 'no':
 	sys.stdout = old_stdout #log END
 	logfile.close() #close log_file
+	#exit
 	sys.exit('program ran succesfully and its output has been written in ' + logfilename)
 else:
 	pass

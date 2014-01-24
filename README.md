@@ -1,7 +1,7 @@
-AMoF - Aptamers Motif Finder
+aMoF - aptamers Motif Finder -also known as- alec's Motif Finder
 ====
-Aptamers Motif Finder is a collection of Python scripts developed to to provide a full featured 'motif finder' tools focused on the analysis of APTAMERS selection results.
-Classical motifs (or kmers) findinding tools take as input long bio-sequences like entire genomes or sets of genes.  AMoF instead focuses on sets of short sequences that are the tipical results of an aptamer selection experiment.
+aMoF is a collection of Python scripts developed to to provide a full featured 'motif finder' tools focused on the analysis of APTAMERS selection results.
+Classical motifs (or kmers) findinding tools take as input long bio-sequences like entire genomes or sets of genes.  aMoF instead, focuses on sets of short sequences that are the tipical results of an aptamer selection experiment.
 
 ##Some background information
 Aptamers are short sequence of nucleotides or aminoacids (DNA, RNA, peptides, circular peptides and small proteins) that bind to a specific target molecule.
@@ -17,5 +17,5 @@ To know more about aptamers here are some links ;)
 
 
 
-##How to use AMoF
+##How to use aMoF
                                        

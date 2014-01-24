@@ -18,4 +18,6 @@ To know more about aptamers here are some links ;)
 
 
 ##How to use aMoF
+The core of this repository
+
                                        

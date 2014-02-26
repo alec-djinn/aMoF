@@ -1,4 +1,4 @@
-aMoF - aptamers Motif Finder
+aMoF - aptamers Motif Finder - alpha version - In progress...
 ====
 aMoF is a collection of Python scripts developed to to provide a full featured 'motif finder' tools focused on the analysis of APTAMERS selection results.
 Classical motifs (or kmers) findinding tools take as input long bio-sequences like entire genomes or sets of genes.  aMoF instead, focuses on sets of short sequences that are the tipical results of an aptamer selection experiment.
@@ -25,21 +25,21 @@ Since I am not a professional programmers you may find the code structure "not c
 ##Overview and How-To-Use info
 #####aMoF.py
 It is the core program.
-It contains the "motifs finder" algorithm and the variables indicating the input the output files.
+It contains the "motifs finder" algorithm and the main variables.
 
 #####seqPrep.py
-This program prepare an appropriate formatted file to serve as input to aMof.py .
+It prepares an appropriate formatted file to serve as input to aMof.py .
 It reads all the fas files (obtained by sequencing) contained in the folder FASfiles and it extracts each sequence and the relative id and writes them in a file.
 This program allow the user to better define from which kind of selection experiment the sequences are coming from.
 
 You can chose among this type of experiments
-* M13 Phage Display usinf PhD-12
-* M13 Phage Display usinf PhD-7
-* M13 Phage Display usinf PhD-C7C
-* T7 Phage Display
-* Ribosome Display
-* DNA SELEX
-* RNA SELEX
+* M13 Phage Display usinf PhD-12 - In progress...
+* M13 Phage Display usinf PhD-7 - Completed!
+* M13 Phage Display usinf PhD-C7C - In progress...
+* T7 Phage Display - In progress...
+* Ribosome Display - In progress...
+* DNA SELEX - In progress...
+* RNA SELEX - In progress...
 
 With this information program will automatically slice out the sequence of interest from the whole sequencing result and it translate it if needed.
 For example, in case of __M13 Phage Display PhD-C7C__, a classic sequencing output, using company provided sequencing primers, looks like this:

@@ -13,8 +13,9 @@ def chooseExperiment():
 	print('Phage Display usinf PhD-12  : 1')
 	print('Phage Display usinf PhD-7   : 2')
 	print('Phage Display usinf PhD-C7C : 3')
-	print('DNA SELEX                   : 4')
-	print('RNA SELEX                   : 5')
+	print('M13 - p8 mutants            : 4')
+	print('DNA SELEX                   : 5')
+	print('RNA SELEX                   : 6')
 	print('*******************************')
 	experiment_type = int(input('Please indicate from which experiment are the input sequences coming from...'))
 	return experiment_type
@@ -119,18 +120,23 @@ def formatSequences(infile, experiment_type):
 		line = infile.readline()
 		while line != '':
 			if line != '\n' and line[0:2] != '>>>': #skip initial blank lines and '>>>' tagged lines
-				id = line[0:9] + '-' + line[76:79].upper() #keep only the seq ID values
+				id = line[0:9] + '-' + line[31:34].upper() #keep only the seq ID values
 				count += 1
 				line = infile.readline()
 				while line == '\n' or line[0:2] == '>>>' : #skip blank and '>>>' tagged lines between id and sequence
 					line = infile.readline()
 				sequence = line[0:].strip().upper()
+				
+				
 				# if PhD-C7C
 				if experiment_type == 3:
 					left_flank = 'GTGGTACCTTTCTATTCTCACTCTGCTTGT'
 					right_flank = 'TGCGGTGGAGGTTCGGCCGAAACTGTT'
 					sequence = reverseComplement(sequence)
-					if left_flank and right_flank in sequence:
+					if 'GTACCTTTCTATTCTCACTCGGCCGAAACTGTTGAAAGTTGTTTAGCAAAA' in sequence:
+						#sequence = 'Wild Type'
+						wildtype += 1
+					elif left_flank and right_flank in sequence:
 						sequence = sequence[sequence.rfind(left_flank)+len(left_flank):sequence.rfind(right_flank)]
 						#print(sequence)
 						sequence = translateDNA(sequence, experiment_type)
@@ -138,18 +144,39 @@ def formatSequences(infile, experiment_type):
 						if '#' in sequence:
 							corrupted += 1
 							corrupted_list += [id]
-					elif 'GTACCTTTCTATTCTCACTCGGCCGAAACTGTTGAAAGTTGTTTAGCAAAA' in sequence:
-						#sequence = 'Wild Type'
-						wildtype += 1
 					else:
 						#sequence = 'Unreadable'
-						unreadable += 1						
+						unreadable += 1
+						
+						
+				# if M13 - p8 mutant
+				if experiment_type == 4:
+					left_flank = 'TTCCGATGCTGTCTTTCGCT'
+					right_flank = 'GCTGAGGGTGACGATCCCGCAAA'
+					sequence = reverseComplement(sequence)
+					if 'GTCTTTCGCTGCTGAGGGTGACGATCCCGCAAAAG' in sequence:
+						#sequence = 'Wild Type'
+						wildtype += 1
+					elif left_flank and right_flank in sequence:
+						sequence = sequence[sequence.rfind(left_flank)+len(left_flank):sequence.rfind(right_flank)]
+						#print(sequence)
+						sequence = translateDNA(sequence, experiment_type)
+						print(id + '\n' + sequence + '\n')
+						if '#' in sequence:
+							corrupted += 1
+							corrupted_list += [id]
+					else:
+						#sequence = 'Unreadable'
+						unreadable += 1
+						
+												
 				#print(id + '\n' + sequence + '\n')
 				line = infile.readline()
 				if id not in sequence_dict: #check if the id are unique
-					sequence_dict[id] = sequence
+					sequence_dict[id] = sequence			
 				else:
 					sys.exit(str('File format error: ' + id + ' is not an unique sequence id.' + '\nPlease check the sequence file and try again.'))
+					#print('File format error: ' + id + ' is not an unique sequence id.' + '\nPlease check the sequence file and try again.')
 			else:
 				line = infile.readline()
 	print('>>>Total sequences  : ' + str(count))
@@ -171,6 +198,7 @@ import glob
 folder = 'FASfiles/'            	
 outfilename = 'all_sequences.txt'
 infile = outfilename
+old_stdout = ''
 
 #check user input
 chooseExperiment()

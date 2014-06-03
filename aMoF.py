@@ -43,7 +43,7 @@ def formatSequences(infile):
 					sys.exit(str('File format error: ' + id + ' is not an unique sequence id.' + '\nPlease check the sequence file and try again.'))
 			else:
 				line = infile.readline()
-	print('>>>total sequences found ' + str(count) + '\n')			
+	print('>>>total correct sequences: ' + str(count) + '\n')			
 
 
 def findMotifs(infile, motif_len, repetition):
@@ -81,7 +81,7 @@ def findMotifs(infile, motif_len, repetition):
 	# sort the dictionary
 	global sorted_list #set sorted_list as global variable
 	sorted_list = sorted(motif_dict.items(), key = operator.itemgetter(1), reverse = True)
-	print('>>>detected motifs with lenght = ' + str(motif_len) + ' and repeated at least ' + str(repetition) + ' times')
+	print('>>>detected motifs with length = ' + str(motif_len) + ' and repeated at least ' + str(repetition) + ' times')
 	print(sorted_list)
 	print('\n')			
 
@@ -92,17 +92,17 @@ import sys
 import time
 
 # variables
-infile = 'sequence_file.txt'
+infile = 'FAS_log.txt'
 logfile = 'results.txt'
 motif_len = 3
 repetition = 0
 write_to_log = 'yes' #if yes, it prints the output in logfile instead printing on screen
-logfile = 'results.txt'
 
 
 # write output - part 1
 if write_to_log == 'yes':
 	old_stdout = sys.stdout
+	logfilename = logfile
 	logfile = open(logfile,'w')
 	sys.stdout = logfile
 else:
@@ -124,7 +124,7 @@ if write_to_log == 'yes':
 	sys.stdout = old_stdout # log END
 	logfile.close() # close log_file
 	# exit
-	sys.exit('>>>program ran succesfully and its output has been written in ' + str(logfile))
+	sys.exit('>>>program ran succesfully and its output has been written in ' + str(logfilename))
 else:
 	pass
 	

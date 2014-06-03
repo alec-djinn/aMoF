@@ -171,7 +171,6 @@ import glob
 folder = 'FASfiles/'            	
 outfilename = 'all_sequences.txt'
 infile = outfilename
-old_stdout = ''
 
 # check user input
 chooseExperiment()
@@ -197,13 +196,13 @@ formatSequences(infile, experiment_type)
 print('>>>execution time :' + str(time.time() - start_time) + ' seconds\n')
 
 # write output - part 2
-if write_to_log == 'no':
+if write_to_log == 'yes':
 	sys.stdout = old_stdout #log END
 	logfile.close() # close log_file
-	# exit
-	sys.exit('program ran succesfully and its output has been written in ' + logfilename)
+	sys.exit('program ran succesfully and its output has been written in ' + str(logfilename))
 else:
 	pass
+
 	
 # exit
 sys.exit('program ran succesfully')

@@ -9,14 +9,14 @@ def chooseExperiment():
 	global exp_list
 	global experiment_type
 	exp_list = [1,2,3,4,5]
-	print('*******************************')
-	print('Phage Display using PhD-12  : 1')
-	print('Phage Display using PhD-7   : 2')
-	print('Phage Display using PhD-C7C : 3')
-	print('M13 - p8 N-term display     : 4')
-	print('DNA SELEX                   : 5')
-	print('RNA SELEX                   : 6')
-	print('*******************************')
+	print('*******************************************')
+	#print('M13KE - p3 N-term display - NEB PhD-12  : 1')
+	#print('M13KE - p3 N-term display - NEB PhD-7   : 2')
+	print('M13KE - p3 N-term display - NEB PhD-C7C : 3')
+	print('M13KE - p8 N-term display - custom      : 4')
+	#print('DNA SELEX                               : 5')
+	#print('RNA SELEX                               : 6')
+	print('*******************************************')
 	experiment_type = int(input('Please indicate from which experiment are the input sequences coming from...'))
 	return experiment_type
 

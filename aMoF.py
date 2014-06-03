@@ -124,7 +124,7 @@ if write_to_log == 'yes':
 	sys.stdout = old_stdout # log END
 	logfile.close() # close log_file
 	# exit
-	sys.exit('>>>program ran succesfully and its output has been written in log.txt')
+	sys.exit('>>>program ran succesfully and its output has been written in ' + str(logfile))
 else:
 	pass
 	

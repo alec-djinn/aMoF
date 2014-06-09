@@ -148,9 +148,9 @@ def formatSequences(infile, experiment_type):
 					if '#' in sequence:
 						corrupted += 1
 						corrupted_list += [id]
-					else:
-						unreadable += 1
-						unreadable_list += [id]
+				else:
+					unreadable += 1
+					unreadable_list += [id]
 				line = infile.readline()
 				if id not in sequence_dict: #check if the id are unique
 					sequence_dict[id] = sequence			

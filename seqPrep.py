@@ -40,11 +40,19 @@ def translateDNA(sequence, experiment_type):
     	'TAC':'Y', 'TAT':'Y', 'TAA':'*', 'TAG':'*',
     	'TGC':'C', 'TGT':'C', 'TGA':'*', 'TGG':'W',
     	}
+<<<<<<< HEAD
 
 	# if amber mutant
 	if experiment_type == 1 or 2 or 3 or 4:
 		gencode['TAG'] = 'Q'
 
+=======
+	
+	# if amber mutant
+	if experiment_type == 1 or 2 or 3 or 4:
+		gencode['TAG'] = 'Q'
+	
+>>>>>>> FETCH_HEAD
 	proteinseq = ''
 	for n in range(0,len(sequence),3):
 		if gencode.has_key(sequence[n:n+3]) == True:
@@ -107,29 +115,49 @@ def formatSequences(infile, experiment_type):
 		line = infile.readline()
 		while line != '':
 			if line != '\n' and line[0:3] != '>>>': # skip initial blank lines and '>>>' tagged lines
+<<<<<<< HEAD
 
+=======
+				
+>>>>>>> FETCH_HEAD
 				# check for a valid FASTA id
 				if line[0:1] == '>':
 					id = line[0:9] + '-' + line[31:34].upper() # keep only the seq ID values
 					count += 1
 					line = infile.readline()
+<<<<<<< HEAD
 
 				# check for a valid FASTA sequence after the ID line
 				if line[0:1] != '>':
 					sequence = line[0:].strip().upper()
 
+=======
+				
+				# check for a valid FASTA sequence after the ID line
+				if line[0:1] != '>':
+					sequence = line[0:].strip().upper()
+									
+>>>>>>> FETCH_HEAD
 				# if PhD-C7C
 				if experiment_type == 3:
 					left_flank = 'GTGGTACCTTTCTATTCTCACTCTGCTTGT'
 					right_flank = 'TGCGGTGGAGGTTCGGCCGAAACTGTT'
 					wild_type = 'GTACCTTTCTATTCTCACTCGGCCGAAACTGTTGAAAGTTGTTTAGCAAAA'
+<<<<<<< HEAD
 
+=======
+					
+>>>>>>> FETCH_HEAD
 				# if M13 - p8 N-term display
 				if experiment_type == 4:
 					left_flank = 'TTCCGATGCTGTCTTTCGCT'
 					right_flank = 'GCTGAGGGTGACGATCCCGCAAA'
 					wild_type = 'GTCTTTCGCTGCTGAGGGTGACGATCCCGCAAAAG'
+<<<<<<< HEAD
 
+=======
+					
+>>>>>>> FETCH_HEAD
 				sequence = reverseComplement(sequence)										
 				if wild_type in sequence:
 					wildtype += 1
@@ -144,7 +172,11 @@ def formatSequences(infile, experiment_type):
 				else:
 					unreadable += 1
 					unreadable_list += [id]
+<<<<<<< HEAD
 
+=======
+						
+>>>>>>> FETCH_HEAD
 				line = infile.readline()
 				if id not in sequence_dict: #check if the id are unique
 					sequence_dict[id] = sequence			
@@ -157,10 +189,17 @@ def formatSequences(infile, experiment_type):
 	print('>>>Corrupted        : ' + str(corrupted)) + ' --> ' + str(corrupted_list)
 	print('>>>Wild Type        : ' + str(wildtype)) + ' --> ' + str(wildtype_list)
 	print('>>>Good             : ' + str(count - (corrupted + wildtype + unreadable)))
+<<<<<<< HEAD
 
 
 # BEGINNING
 
+=======
+	
+	
+# BEGINNING
+
+>>>>>>> FETCH_HEAD
 # imports
 import sys
 import time
@@ -178,7 +217,11 @@ chooseExperiment()
 while experiment_type not in exp_list:
 	print('\n\n****   ERROR! ' + str(experiment_type) + ' is not a valid choice. Please try again...   ****\n\n')
 	chooseExperiment()
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> FETCH_HEAD
 # write output - part 1
 write_to_log = 'yes' # if yes, it prints the output in FAS_log.txt instead printing on screen
 logfile = 'FAS_log.txt'
@@ -189,7 +232,11 @@ if write_to_log == 'yes':
 	sys.stdout = logfile
 else:
 	pass
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> FETCH_HEAD
 # body
 start_time = time.time()
 concatenateFAS(folder, outfilename)
@@ -204,6 +251,12 @@ if write_to_log == 'no':
 	sys.exit('program ran succesfully and its output has been written in ' + logfilename)
 else:
 	pass
+<<<<<<< HEAD
 
 # exit
 sys.exit('program ran succesfully')
+=======
+	
+# exit
+sys.exit('program ran succesfully')
+>>>>>>> FETCH_HEAD

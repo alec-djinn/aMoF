@@ -4,20 +4,6 @@ import sys
 import time
 
 #functions
-def checkPython():
-	'''(none) -> str
-	It checks Python version (only the major int) and prints what has been found. 
-	'''
-	version_check = int((sys.version)[0]) # checks Python version
-	if version_check == 2:
-		#execute code for Python 2
-		print('Detected Python 2')
-	elif version_check == 3:
-		#execute code for Python 2
-		print('Detected Python 3')
-	else:
-		sys.exit('Python version error!!\nThis program is compatible not compatible with your Python version.\nPlease install Python 2.7.x or Python 3.x')		
-
 def formatSequences(infile):
 	'''(input file name) -> str
 	Reads a file containing a list of sequences preceded by a unique sequence id.
@@ -109,7 +95,6 @@ def main(infile='FAS_log.txt', motif_len_=5, repetition_=4, write_to_log='yes', 
 
 	#body
 	start_time = time.time()
-	checkPython()
 	formatSequences(infile)
 	sorted_list = [1]
 	while sorted_list != []:

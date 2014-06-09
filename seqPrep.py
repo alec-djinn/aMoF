@@ -4,44 +4,25 @@
 # In case of Phage Display the kind of library that has been used can be chosen (PhD12. PhDC7C, etc...)
 # In case of SELEX you can indicate the sequencing primer and the sequences flag regions
 
-#FUNCTIONS
+# FUNCTIONS
 def chooseExperiment():
 	global exp_list
 	global experiment_type
 	exp_list = [1,2,3,4,5]
 	print('*******************************')
-	print('Phage Display usinf PhD-12  : 1')
-	print('Phage Display usinf PhD-7   : 2')
-	print('Phage Display usinf PhD-C7C : 3')
-	print('DNA SELEX                   : 4')
-	print('RNA SELEX                   : 5')
+	print('Phage Display using PhD-12  : 1')
+	print('Phage Display using PhD-7   : 2')
+	print('Phage Display using PhD-C7C : 3')
+	print('M13 - p8 N-term display     : 4')
+	print('DNA SELEX                   : 5')
+	print('RNA SELEX                   : 6')
 	print('*******************************')
 	experiment_type = int(input('Please indicate from which experiment are the input sequences coming from...'))
 	return experiment_type
 
 
 def translateDNA(sequence, experiment_type):
-	if experiment_type == 3:
-		gencode = {
-    	'ATA':'I', 'ATC':'I', 'ATT':'I', 'ATG':'M',
-    	'ACA':'T', 'ACC':'T', 'ACG':'T', 'ACT':'T',
-    	'AAC':'N', 'AAT':'N', 'AAA':'K', 'AAG':'K',
-    	'AGC':'S', 'AGT':'S', 'AGA':'R', 'AGG':'R',
-    	'CTA':'L', 'CTC':'L', 'CTG':'L', 'CTT':'L',
-    	'CCA':'P', 'CCC':'P', 'CCG':'P', 'CCT':'P',
-    	'CAC':'H', 'CAT':'H', 'CAA':'Q', 'CAG':'Q',
-    	'CGA':'R', 'CGC':'R', 'CGG':'R', 'CGT':'R',
-    	'GTA':'V', 'GTC':'V', 'GTG':'V', 'GTT':'V',
-    	'GCA':'A', 'GCC':'A', 'GCG':'A', 'GCT':'A',
-    	'GAC':'D', 'GAT':'D', 'GAA':'E', 'GAG':'E',
-    	'GGA':'G', 'GGC':'G', 'GGG':'G', 'GGT':'G',
-    	'TCA':'S', 'TCC':'S', 'TCG':'S', 'TCT':'S',
-    	'TTC':'F', 'TTT':'F', 'TTA':'L', 'TTG':'L',
-    	'TAC':'Y', 'TAT':'Y', 'TAA':'*', 'TAG':'Q',
-    	'TGC':'C', 'TGT':'C', 'TGA':'*', 'TGG':'W',
-    	}
-	else:
-		gencode = {
+	gencode = {
     	'ATA':'I', 'ATC':'I', 'ATT':'I', 'ATG':'M',
     	'ACA':'T', 'ACC':'T', 'ACG':'T', 'ACT':'T',
     	'AAC':'N', 'AAT':'N', 'AAA':'K', 'AAG':'K',
@@ -59,6 +40,11 @@ def translateDNA(sequence, experiment_type):
     	'TAC':'Y', 'TAT':'Y', 'TAA':'*', 'TAG':'*',
     	'TGC':'C', 'TGT':'C', 'TGA':'*', 'TGG':'W',
     	}
+
+	# if amber mutant
+	if experiment_type == 1 or 2 or 3 or 4:
+		gencode['TAG'] = 'Q'
+
 	proteinseq = ''
 	for n in range(0,len(sequence),3):
 		if gencode.has_key(sequence[n:n+3]) == True:
@@ -110,6 +96,8 @@ def formatSequences(infile, experiment_type):
 	'''
 	sequence_dict = {}
 	corrupted_list = []
+	unreadable_list = []
+	wildtype_list = []
 	count = 0
 	wildtype = 0
 	corrupted = 0
@@ -118,68 +106,81 @@ def formatSequences(infile, experiment_type):
 	with open(infile, 'r') as infile:
 		line = infile.readline()
 		while line != '':
-			if line != '\n' and line[0:2] != '>>>': #skip initial blank lines and '>>>' tagged lines
-				id = line[0:9] + '-' + line[76:79].upper() #keep only the seq ID values
-				count += 1
-				line = infile.readline()
-				while line == '\n' or line[0:2] == '>>>' : #skip blank and '>>>' tagged lines between id and sequence
+			if line != '\n' and line[0:3] != '>>>': # skip initial blank lines and '>>>' tagged lines
+
+				# check for a valid FASTA id
+				if line[0:1] == '>':
+					id = line[0:9] + '-' + line[31:34].upper() # keep only the seq ID values
+					count += 1
 					line = infile.readline()
-				sequence = line[0:].strip().upper()
+
+				# check for a valid FASTA sequence after the ID line
+				if line[0:1] != '>':
+					sequence = line[0:].strip().upper()
+
 				# if PhD-C7C
 				if experiment_type == 3:
 					left_flank = 'GTGGTACCTTTCTATTCTCACTCTGCTTGT'
 					right_flank = 'TGCGGTGGAGGTTCGGCCGAAACTGTT'
-					sequence = reverseComplement(sequence)
-					if left_flank and right_flank in sequence:
-						sequence = sequence[sequence.rfind(left_flank)+len(left_flank):sequence.rfind(right_flank)]
-						#print(sequence)
-						sequence = translateDNA(sequence, experiment_type)
-						print(id + '\n' + sequence + '\n')
-						if '#' in sequence:
-							corrupted += 1
-							corrupted_list += [id]
-					elif 'GTACCTTTCTATTCTCACTCGGCCGAAACTGTTGAAAGTTGTTTAGCAAAA' in sequence:
-						#sequence = 'Wild Type'
-						wildtype += 1
-					else:
-						#sequence = 'Unreadable'
-						unreadable += 1						
-				#print(id + '\n' + sequence + '\n')
+					wild_type = 'GTACCTTTCTATTCTCACTCGGCCGAAACTGTTGAAAGTTGTTTAGCAAAA'
+
+				# if M13 - p8 N-term display
+				if experiment_type == 4:
+					left_flank = 'TTCCGATGCTGTCTTTCGCT'
+					right_flank = 'GCTGAGGGTGACGATCCCGCAAA'
+					wild_type = 'GTCTTTCGCTGCTGAGGGTGACGATCCCGCAAAAG'
+
+				sequence = reverseComplement(sequence)										
+				if wild_type in sequence:
+					wildtype += 1
+					wildtype_list += [id]
+				elif left_flank and right_flank in sequence:
+					sequence = sequence[sequence.rfind(left_flank)+len(left_flank):sequence.rfind(right_flank)]
+					sequence = translateDNA(sequence, experiment_type)
+					print(id + '\n' + sequence + '\n')
+					if '#' in sequence:
+						corrupted += 1
+						corrupted_list += [id]
+				else:
+					unreadable += 1
+					unreadable_list += [id]
+
 				line = infile.readline()
 				if id not in sequence_dict: #check if the id are unique
-					sequence_dict[id] = sequence
+					sequence_dict[id] = sequence			
 				else:
 					sys.exit(str('File format error: ' + id + ' is not an unique sequence id.' + '\nPlease check the sequence file and try again.'))
 			else:
 				line = infile.readline()
 	print('>>>Total sequences  : ' + str(count))
-	print('>>>Unreadable       : ' + str(unreadable))
+	print('>>>Unreadable       : ' + str(unreadable)) + ' --> ' + str(unreadable_list)
 	print('>>>Corrupted        : ' + str(corrupted)) + ' --> ' + str(corrupted_list)
-	print('>>>Wild Type        : ' + str(wildtype))
+	print('>>>Wild Type        : ' + str(wildtype)) + ' --> ' + str(wildtype_list)
 	print('>>>Good             : ' + str(count - (corrupted + wildtype + unreadable)))
-	
-	
-#BEGINNING
 
-#imports
+
+# BEGINNING
+
+# imports
 import sys
 import time
 import shutil
 import glob
 
-#variables
+# variables
 folder = 'FASfiles/'            	
 outfilename = 'all_sequences.txt'
 infile = outfilename
+old_stdout = ''
 
-#check user input
+# check user input
 chooseExperiment()
 while experiment_type not in exp_list:
 	print('\n\n****   ERROR! ' + str(experiment_type) + ' is not a valid choice. Please try again...   ****\n\n')
 	chooseExperiment()
-		
-#write output - part 1
-write_to_log = 'yes' #if yes, it prints the output in FAS_log.txt instead printing on screen
+
+# write output - part 1
+write_to_log = 'yes' # if yes, it prints the output in FAS_log.txt instead printing on screen
 logfile = 'FAS_log.txt'
 logfilename = logfile
 if write_to_log == 'yes':
@@ -188,21 +189,21 @@ if write_to_log == 'yes':
 	sys.stdout = logfile
 else:
 	pass
-	
-#body
+
+# body
 start_time = time.time()
 concatenateFAS(folder, outfilename)
 formatSequences(infile, experiment_type)
 print('>>>execution time :' + str(time.time() - start_time) + ' seconds\n')
 
-#write output - part 2
+# write output - part 2
 if write_to_log == 'no':
 	sys.stdout = old_stdout #log END
-	logfile.close() #close log_file
-	#exit
+	logfile.close() # close log_file
+	# exit
 	sys.exit('program ran succesfully and its output has been written in ' + logfilename)
 else:
 	pass
-	
-#exit
+
+# exit
 sys.exit('program ran succesfully')

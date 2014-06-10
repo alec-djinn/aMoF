@@ -92,13 +92,25 @@ import sys
 import time
 
 # variables
+<<<<<<< HEAD
 infile = 'FAS_log.txt'
+=======
+<<<<<<< HEAD
+infile = 'FAS_log.txt'
+=======
+infile = 'sequence_file.txt'
+>>>>>>> FETCH_HEAD
+>>>>>>> FETCH_HEAD
 logfile = 'results.txt'
 motif_len = 3
 repetition = 0
 write_to_log = 'yes' #if yes, it prints the output in logfile instead printing on screen
 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> FETCH_HEAD
 # write output - part 1
 if write_to_log == 'yes':
 	old_stdout = sys.stdout
@@ -127,6 +139,10 @@ if write_to_log == 'yes':
 	sys.exit('>>>program ran succesfully and its output has been written in ' + str(logfilename))
 else:
 	pass
+<<<<<<< HEAD
+
+=======
 	
+>>>>>>> FETCH_HEAD
 # exit
 sys.exit('>>>program ran succesfully')

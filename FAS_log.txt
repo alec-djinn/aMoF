@@ -278,5 +278,9 @@ SYA
 >>>Corrupted        : 0 --> []
 >>>Wild Type        : 2 --> ['>13651382-B05', '>13651428-H10']
 >>>Good             : 91
+<<<<<<< HEAD
 >>>execution time :0.0485279560089 seconds
+=======
+>>>execution time :0.0772380828857 seconds
+>>>>>>> FETCH_HEAD
 

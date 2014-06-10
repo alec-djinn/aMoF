@@ -206,12 +206,6 @@ if write_to_log == 'yes':
 else:
 	pass
 
-<<<<<<< HEAD
-=======
-# exit
-sys.exit('program ran succesfully')
 
->>>>>>> FETCH_HEAD
-	
 # exit
 sys.exit('program ran succesfully')

@@ -4,14 +4,22 @@
 # In case of Phage Display the kind of library that has been used can be chosen (PhD12. PhDC7C, etc...)
 # In case of SELEX you can indicate the sequencing primer and the sequences flag regions
 
+# imports
+import sys
+import time
+import shutil
+import glob
+import re
+
+
 # FUNCTIONS
 def chooseExperiment():
 	global exp_list
 	global experiment_type
 	exp_list = [1,2,3,4,5]
 	print('*******************************************')
-	#print('M13KE - p3 N-term display - NEB PhD-12  : 1')
-	#print('M13KE - p3 N-term display - NEB PhD-7   : 2')
+	print('M13KE - p3 N-term display - NEB PhD-12  : 1')
+	print('M13KE - p3 N-term display - NEB PhD-7   : 2')
 	print('M13KE - p3 N-term display - NEB PhD-C7C : 3')
 	print('M13KE - p8 N-term display - custom      : 4')
 	#print('DNA SELEX                               : 5')
@@ -45,9 +53,6 @@ def translateDNA(sequence, experiment_type):
 	if experiment_type == 1 or 2 or 3 or 4:
 		gencode['TAG'] = 'Q'
 
-	# if amber mutant
-	if experiment_type == 1 or 2 or 3 or 4:
-		gencode['TAG'] = 'Q'
 	proteinseq = ''
 	for n in range(0,len(sequence),3):
 		if gencode.has_key(sequence[n:n+3]) == True:
@@ -113,18 +118,22 @@ def formatSequences(infile, experiment_type):
 
 				# check for a valid FASTA id
 				if line[0:1] == '>':
-					id = line[0:9] + '-' + line[31:34].upper() # keep only the seq ID values
+					#id = line[0:9] + '-' + line[31:34].upper() # keep only the seq ID values
+					well_ID = re.findall('[A-Z][0-9][0-9]', line)
+					id = '>' + well_ID[0]
 					count += 1
 					line = infile.readline()
 
 				# check for a valid FASTA sequence after the ID line
 				if line[0:1] != '>':
 					sequence = line[0:].strip().upper()
-
-				# check for a valid FASTA sequence after the ID line
-				if line[0:1] != '>':
-					sequence = line[0:].strip().upper()
-
+				
+				# if PhD-7 and PhD-12
+				if experiment_type == 1 or 2:
+					left_flank = 'GTGGTACCTTTCTATTCTCACTCT'
+					right_flank = 'GGTGGAGGTTCGGCCGAAACTGTTGAAAGTTGTTTAGCA'
+					wild_type = 'GTTGTTCCTTTCTATTCTCACTCCGCTGAAACTGTTGAAAGTTGTTTAGCA'
+				
 				# if PhD-C7C
 				if experiment_type == 3:
 					left_flank = 'GTGGTACCTTTCTATTCTCACTCTGCTTGT'
@@ -136,7 +145,8 @@ def formatSequences(infile, experiment_type):
 					left_flank = 'TTCCGATGCTGTCTTTCGCT'
 					right_flank = 'GCTGAGGGTGACGATCCCGCAAA'
 					wild_type = 'GTCTTTCGCTGCTGAGGGTGACGATCCCGCAAAAG'
-
+				
+				# analyze sequence
 				sequence = reverseComplement(sequence)										
 				if wild_type in sequence:
 					wildtype += 1
@@ -164,48 +174,41 @@ def formatSequences(infile, experiment_type):
 	print('>>>Wild Type        : ' + str(wildtype)) + ' --> ' + str(wildtype_list)
 	print('>>>Good             : ' + str(count - (corrupted + wildtype + unreadable)))
 
-# imports
-import sys
-import time
-import shutil
-import glob
 
-# variables
-folder = 'FASfiles/'            	
-outfilename = 'all_sequences.txt'
-infile = outfilename
-
-# check user input
-chooseExperiment()
-while experiment_type not in exp_list:
-	print('\n\n****   ERROR! ' + str(experiment_type) + ' is not a valid choice. Please try again...   ****\n\n')
+def main (folder='FASfiles/', outfilename='all_sequences.txt', infile='all_sequences.txt'):
+	# check user input
 	chooseExperiment()
+	while experiment_type not in exp_list:
+		print('\n\n****   ERROR! ' + str(experiment_type) + ' is not a valid choice. Please try again...   ****\n\n')
+		chooseExperiment()
 
-# write output - part 1
-write_to_log = 'yes' # if yes, it prints the output in FAS_log.txt instead printing on screen
-logfile = 'FAS_log.txt'
-logfilename = logfile
-if write_to_log == 'yes':
-	old_stdout = sys.stdout
-	logfile = open(logfile,'w')
-	sys.stdout = logfile
-else:
-	pass
+	# write output - part 1
+	write_to_log = 'yes' # if yes, it prints the output in FAS_log.txt instead printing on screen
+	logfile = 'FAS_log.txt'
+	logfilename = logfile
+	if write_to_log == 'yes':
+		old_stdout = sys.stdout
+		logfile = open(logfile,'w')
+		sys.stdout = logfile
+	else:
+		pass
 
-# body
-start_time = time.time()
-concatenateFAS(folder, outfilename)
-formatSequences(infile, experiment_type)
-print('>>>execution time :' + str(time.time() - start_time) + ' seconds\n')
+	# body
+	start_time = time.time()
+	concatenateFAS(folder, outfilename)
+	formatSequences(infile, experiment_type)
+	print('>>>execution time :' + str(time.time() - start_time) + ' seconds\n')
 
-# write output - part 2
-if write_to_log == 'yes':
-	sys.stdout = old_stdout #log END
-	logfile.close() # close log_file
-	sys.exit('program ran succesfully and its output has been written in ' + str(logfilename))
-else:
-	pass
+	# write output - part 2
+	if write_to_log == 'yes':
+		sys.stdout = old_stdout #log END
+		logfile.close() # close log_file
+		sys.exit('program ran succesfully and its output has been written in ' + str(logfilename))
+	else:
+		pass
 
-
-# exit
-sys.exit('program ran succesfully')
+	# exit
+	sys.exit('program ran succesfully')
+	
+if __name__ == '__main__':
+    main()

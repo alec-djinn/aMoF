@@ -32,9 +32,12 @@ It prepares an appropriate formatted file to serve as input to aMof.py .
 It reads all the fas files (obtained by sequencing) contained in the folder FASfiles and it extracts each sequence and the relative id and writes them in a file.
 This program allow the user to better define from which kind of selection experiment the sequences are coming from.
 
+#####aMoF_GUI.py
+A graphic user interface for aMoF - In progress...
+
 You can chose among this type of experiments
-* M13KE - p3 N-term display - NEB PhD-12 - In progress...
-* M13KE - p3 N-term display - NEB PhD-7 - In progress...
+* M13KE - p3 N-term display - NEB PhD-12 - Completed!
+* M13KE - p3 N-term display - NEB PhD-7 - Completed!
 * M13KE - p3 N-term display - NEB PhD-C7C - Completed!
 * M13KE - p8 N-term display - custom - Completed!
 * T7 Phage Display - In progress...
@@ -54,7 +57,7 @@ For example, in case of __M13 Phage Display PhD-C7C__, a classic sequencing outp
 
 | after using seqPrep.py|
 | ------------------------------------------------------------
-| >12826357-A01
+| >A01
 | NTGSPYE
 
 Note that the repeated sequence at N-ter (AC) and C-term (CGGGS), distinctive of any PhD-C7C sequence, has been sliced out to exclude them from future statistical analysis 

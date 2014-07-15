@@ -1,8 +1,8 @@
 aMoF - aptamers Motif Finder - alpha version - In progress...
 ====
 aMoF is a collection of Python scripts developed to to provide a full featured 'motif finder' tools focused on the analysis of APTAMERS selection results.
-Classical motifs (or kmers) findinding tools take as input long bio-sequences like entire genomes or sets of genes.  aMoF instead, focuses on sets of short sequences that are the tipical results of an aptamer selection experiment.
-aMoF is ment to be user friendly and "dummy proof" so the code is compatible with both Python2 and Python3 and it relies ONLY on the Python Standard Library.
+Classical motifs (or kmers) finding tools take as input long bio-sequences like entire genomes or sets of genes.  aMoF instead, focuses on sets of short sequences that are the typical results of an aptamer selection experiment.
+aMoF is meant to be user friendly and "dummy proof" so the code is compatible with both Python2 and Python3 and it relies ONLY on the Python Standard Library.
 
 
 ##Some background information

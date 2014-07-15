@@ -19,7 +19,7 @@ To know more about aptamers here are some links ;)
 
 
 ##Disclaimer
-Since I am not a professional programmers you may find the code structure "not conventional", you are free to comment on it and suggest improvements. 
+Since I am not a professional programmer you may find the code structure "not conventional", you are free to comment on it and suggest improvements. 
 
 
 ##Overview and How-To-Use info

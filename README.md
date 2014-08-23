@@ -5,11 +5,11 @@ Classical motifs (or kmers) finding tools take as input long bio-sequences like 
 aMoF is meant to be user friendly and "dummy proof" so the code is compatible with both Python2 and Python3 and it relies ONLY on the Python Standard Library.
 
 
-##Some background information
+##Some background info
 Aptamers are short sequence of nucleotides or aminoacids (DNA, RNA, peptides, circular peptides and small proteins) that bind to a specific target molecule.
 They can be used for both basic research and clinical purposes as macromolecular drugs or as "atibody-like-particles" for molecular detection.
-Aptamers are naturalli present in living organisms where they often act as switch to regulate many different pathways.
-In molecular biology, there are two main methods to select aptamers: SELEX and Phage Display. Both methods rely on the analysis of sequences to discriminate specifically enriched aptamers from background noise.
+Aptamers are naturally present in living organisms where they often act as molecular switches to regulate many different biological pathways.
+In molecular biology, there are two main methods to select aptamers: SELEX (for DNA and RNA) and Phage Display (for peptides). Both methods rely on the analysis of sequences to discriminate specifically enriched aptamers from background noise.
 
 To know more about aptamers here are some links ;)
 * http://en.wikipedia.org/wiki/Aptamer
@@ -19,10 +19,10 @@ To know more about aptamers here are some links ;)
 
 
 ##Disclaimer
-Since I am not a professional programmer you may find the code structure "not conventional", you are free to comment on it and suggest improvements. 
+Since I am not a professional programmer you may find the code structure "not conventional", you are free to comment and suggest improvements. 
 
 
-##Overview and How-To-Use info
+##Overview and How-To-Use
 #####aMoF.py
 It is the core program.
 It contains the "motifs finder" algorithm and the main variables.

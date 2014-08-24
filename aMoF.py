@@ -81,15 +81,15 @@ def findMotifs(infile, motif_len, repetition):
 	print(sorted_list)
 	print('\n')			
 
-def main(infile='FAS_log.txt', motif_len_=2, repetition_=3, write_to_log='yes', logfile='results_b.txt'):
+def main(infile='FAS_log.txt', motif_len_=1, repetition_=3, write_to_log='yes', logfile='results_b.txt'):
 	global motif_len, repetition, sorted_list
 	motif_len = motif_len_
 	repetition = repetition_
 	#write output - part 1
 	if write_to_log == 'yes':
 		old_stdout = sys.stdout
-		logfile = open(logfile,'w')
-		sys.stdout = logfile
+		log_file = open(logfile,'w')
+		sys.stdout = log_file
 	else:
 		pass
 
@@ -106,9 +106,9 @@ def main(infile='FAS_log.txt', motif_len_=2, repetition_=3, write_to_log='yes', 
 	#write output - part 2
 	if write_to_log == 'yes':
 		sys.stdout = old_stdout #log END
-		logfile.close() #close log_file
+		log_file.close() #close log_file
 		#exit
-		sys.exit('>>>program ran succesfully and its output has been written in ' + str(logfile))
+		sys.exit('>>>program ran succesfully and its output has been written in ' + logfile)
 	else:
 		pass
 	

@@ -81,7 +81,7 @@ def findMotifs(infile, motif_len, repetition):
 	print(sorted_list)
 	print('\n')			
 
-def main(infile='FAS_log.txt', motif_len_=5, repetition_=4, write_to_log='yes', logfile='results_b.txt'):
+def main(infile='FAS_log.txt', motif_len_=2, repetition_=4, write_to_log='yes', logfile='results_b.txt'):
 	global motif_len, repetition, sorted_list
 	motif_len = motif_len_
 	repetition = repetition_
@@ -108,7 +108,7 @@ def main(infile='FAS_log.txt', motif_len_=5, repetition_=4, write_to_log='yes', 
 		sys.stdout = old_stdout #log END
 		logfile.close() #close log_file
 		#exit
-		sys.exit('>>>program ran succesfully and its output has been written in log.txt')
+		sys.exit('>>>program ran succesfully and its output has been written in results_b.txt')
 	else:
 		pass
 	

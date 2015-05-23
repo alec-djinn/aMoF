@@ -33,7 +33,7 @@ It reads all the fas files (obtained by sequencing) contained in the folder FASf
 This program allow the user to better define from which kind of selection experiment the sequences are coming from.
 
 #####aMoF webapp
-A Flask-based application with a minimalistic user interface for aMoF - In progress at http://webapp-amof.rhcloud.com/
+A Flask-based application with a minimalistic user interface for aMoF - In progress at http://beta-amof.rhcloud.com/
 
 You can chose among this type of experiments
 * M13KE - p3 N-term display - NEB PhD-12 - Completed!

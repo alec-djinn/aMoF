@@ -1,0 +1,2 @@
+aMoF is a motif finding tool for biological sequences.
+It takes nucleic acid and protein sequences in various formats and any size and looks for motifs, patterns and other fancy features hidden in your raw data. Finally, it reports all findings with a clean and copy/paste friendly touch.
